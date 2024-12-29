@@ -1,4 +1,4 @@
-# app/static/js/script.js
+//# app/static/js/script.js
 function toggleDeposit(element) {
     if (element.classList.contains('clicked')) return;
     
