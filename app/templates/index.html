@@ -7,90 +7,94 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container mt-4">
-        {% if current_user.is_authenticated %}
-            <div class="row mb-4">
-                <div class="col">
-                    <h2>Olá, {{ current_user.username }}</h2>
-                    <a href="{{ url_for('main.logout') }}" class="btn btn-danger">Sair</a>
-                </div>
-            </div>
-            
-            <div class="row mb-4">
-                <div class="col">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" 
-                             style="width: {{ (total_clicked / 10000) * 100 }}%"
-                             aria-valuenow="{{ total_clicked }}" 
-                             aria-valuemin="0" 
-                             aria-valuemax="10000">
-                            R$ {{ "%.2f"|format(total_clicked) }}
-                        </div>
+    <div class="center">
+        <div class="container mt-4">
+            {% if current_user.is_authenticated %}
+                <div class="row mb-4">
+                    <div class="col">
+                        <h2>Olá, {{ current_user.username }}</h2>
+                        <a href="{{ url_for('main.logout') }}" class="btn btn-danger">Sair</a>
                     </div>
-                    <p class="mt-2">
-                        Total depositado: R$ {{ "%.2f"|format(total_clicked) }} |
-                        Falta: R$ {{ "%.2f"|format(10000 - total_clicked) }}
-                    </p>
                 </div>
-            </div>
+                
+                <div class="row mb-4">
+                    <div class="col">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" 
+                                style="width: {{ (total_clicked / 10000) * 100 }}%"
+                                aria-valuenow="{{ total_clicked }}" 
+                                aria-valuemin="0" 
+                                aria-valuemax="10000">
+                                R$ {{ "%.2f"|format(total_clicked) }}
+                            </div>
+                        </div>
+                        <p class="mt-2">
+                            Total depositado: R$ {{ "%.2f"|format(total_clicked) }} |
+                            Falta: R$ {{ "%.2f"|format(10000 - total_clicked) }}
+                        </p>
+                    </div>
+                </div>
 
-            <div class="deposits-container">
-                {% for value, count, total in deposits_structure %}
-                    <div class="row mb-3">
-                        <div class="col">
-                            <h5>R$ {{ "%.2f"|format(value) }} ({{ count }} depósitos - Total: R$ {{ "%.2f"|format(total) }})</h5>
-                            {% for i in range(count) %}
-                                <div class="deposit-cell{% if deposits_status[value|string + '-' + i|string] %} clicked{% endif %}"
-                                     data-value="{{ value }}"
-                                     data-index="{{ i }}"
-                                     onclick="toggleDeposit(this)">
-                                    R$ {{ "%.2f"|format(value) }}
-                                </div>
-                            {% endfor %}
+                <div class="deposits-container">
+                    {% for value, count, total in deposits_structure %}
+                        <div class="row mb-3">
+                            <div class="col">
+                                <h5>R$ {{ "%.2f"|format(value) }} ({{ count }} depósitos - Total: R$ {{ "%.2f"|format(total) }})</h5>
+                                {% for i in range(count) %}
+                                    <div class="deposit-cell{% if deposits_status[value|string + '-' + i|string] %} clicked{% endif %}"
+                                        data-value="{{ value }}"
+                                        data-index="{{ i }}"
+                                        onclick="toggleDeposit(this)">
+                                        R$ {{ "%.2f"|format(value) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Login</h2>
+                        <form method="POST" action="{{ url_for('main.login') }}">
+                            <div class="mb-3">
+                                <input type="text" name="username" class="form-control" placeholder="Usuário" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" name="password" class="form-control" placeholder="Senha" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Entrar</button>
+                        </form>
                     </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="row">
-                <div class="col-md-6">
-                    <h2>Login</h2>
-                    <form method="POST" action="{{ url_for('main.login') }}">
-                        <div class="mb-3">
-                            <input type="text" name="username" class="form-control" placeholder="Usuário" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="password" name="password" class="form-control" placeholder="Senha" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Entrar</button>
-                    </form>
+                    <div class="col-md-6">
+                        <h2>Registro</h2>
+                        <form method="POST" action="{{ url_for('main.register') }}">
+                            <div class="mb-3">
+                                <input type="text" name="username" class="form-control" placeholder="Usuário" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" name="password" class="form-control" placeholder="Senha" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Registrar</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <h2>Registro</h2>
-                    <form method="POST" action="{{ url_for('main.register') }}">
-                        <div class="mb-3">
-                            <input type="text" name="username" class="form-control" placeholder="Usuário" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="password" name="password" class="form-control" placeholder="Senha" required>
-                        </div>
-                        <button type="submit" class="btn btn-success">Registrar</button>
-                    </form>
-                </div>
-            </div>
-        {% endif %}
-        
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-info mt-3">{{ message }}</div>
-                {% endfor %}
             {% endif %}
-        {% endwith %}
+            
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-info mt-3">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
     </div>
-
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
-    
+    <div class="footer">
+        <p>2025 - Desenvolvimento, Lógica e Deploy - Márcio Fernando Maia</p>
+    </div>
+
 </body>
 </html>
