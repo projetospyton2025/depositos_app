@@ -1,5 +1,5 @@
-# run.py (DESCOMENTE PARA RODAR LOCALMENTE)
-
+# run.py (DESCOMENTE PARA RODAR remotamente)
+"""
 from app import create_app, db
 
 app = create_app()
@@ -9,7 +9,7 @@ if __name__ == '__main__':
         db.create_all()
     app.run(debug=True)
 """
-# run.py (COMENTE PARA RODAR LOCALMENTE)
+# run.py (COMENTE PARA RODAR Localmente)
 from app import create_app, db
 import os
 
@@ -24,4 +24,3 @@ if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     # Executa o servidor no modo de produção.
     app.run(host="0.0.0.0", port=port, debug=False)
-"""
