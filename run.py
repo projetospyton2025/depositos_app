@@ -1,6 +1,7 @@
 # run.py (DESCOMENTE PARA RODAR Localmente)
 # run.py (COMENTE PARA RODAR Remotamente)
 
+"""
 from app import create_app, db
 import os
 
@@ -13,7 +14,7 @@ if __name__ == '__main__':
         print(f"Banco existe? {os.path.exists(db_path)}")
         db.create_all()
     app.run(debug=True)
-
+"""
 
 """
 from app import create_app, db
@@ -28,7 +29,6 @@ if __name__ == '__main__':
 # run.py (COMENTE PARA RODAR Localmente)
 # run.py (DESCOMENTE PARA RODAR Remotamente)
 
-"""
 from app import create_app, db
 import os
 
@@ -40,7 +40,21 @@ if __name__ == '__main__':
         db.create_all()
 
     # Obtém a porta do ambiente (Render) ou usa 5000 como padrão.
-    port = int(os.environ.get("PORT", 5000))
+    # port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 1000))
+
     # Executa o servidor no modo de produção.
     app.run(host="0.0.0.0", port=port, debug=False)
+
+
+
+# run.py (COMENTE PARA RODAR Localmente)
+# run.py (DESCOMENTE PARA RODAR Remotamente)
+"""
+from app import create_app
+
+app = create_app()
+
+if __name__ == "__main__":
+    app.run(debug=True)
 """
