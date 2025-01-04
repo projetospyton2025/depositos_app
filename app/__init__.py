@@ -53,6 +53,7 @@ def create_app():
 
     return app
 """
+"""
 
 import os
 from flask import Flask
@@ -87,6 +88,42 @@ def create_app():
 
         # Importa modelos e cria o banco de dados
         from app.models.user import User
+        db.create_all()
+
+    return app
+"""
+
+#Este arquivo configura o aplicativo Flask e inicializa o banco de dados. Verifique se o banco de dados está sendo inicializado corretamente e se db.create_all() está sendo chamado.
+
+import os
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+
+# Inicializando extensões
+db = SQLAlchemy()
+login_manager = LoginManager()
+
+def create_app():
+    app = Flask(__name__)
+
+    # Configuração do banco de dados
+    project_root = os.path.abspath(os.path.dirname(__file__))
+    db_path = os.path.join(project_root, 'depositos.db')  # Usando caminho correto
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.secret_key = 'sua-chave-secreta'  # Defina uma chave secreta segura
+
+    # Inicializando extensões
+    db.init_app(app)
+    login_manager.init_app(app)
+
+    # Registrando rotas
+    from app.routes.main import main
+    app.register_blueprint(main)
+
+    # Criando banco de dados
+    with app.app_context():
         db.create_all()
 
     return app
