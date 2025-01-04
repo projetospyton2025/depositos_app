@@ -236,21 +236,36 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
+# Em app/routes/main.py, atualize a rota toggle_deposit:
 
 @main.route('/toggle_deposit', methods=['POST'])
 @login_required
 def toggle_deposit():
-    data = request.json
-    value = data['value']
-    index = data['index']
-    key = f"{value}-{index}"
-
-    deposits = json.loads(current_user.deposits)
-    deposits[key] = True
-
-#Verifique se os dados de deposits estão sendo atualizados corretamente quando o usuário interage com o sistema e se db.session.commit() está sendo chamado sempre que houver alterações.
-    current_user.deposits = json.dumps(deposits)
-    db.session.commit()
-
-    return {'success': True}
-
+    try:
+        data = request.json
+        if not data or 'value' not in data or 'index' not in data:
+            return {'success': False, 'error': 'Dados inválidos'}, 400
+            
+        value = float(data['value'])
+        index = int(data['index'])
+        
+        # Validação dos valores
+        valid_values = [dep[0] for dep in DEPOSITS_STRUCTURE]
+        if value not in valid_values:
+            return {'success': False, 'error': 'Valor inválido'}, 400
+            
+        # Validação do índice
+        max_index = next(dep[1] for dep in DEPOSITS_STRUCTURE if dep[0] == value) - 1
+        if not (0 <= index <= max_index):
+            return {'success': False, 'error': 'Índice inválido'}, 400
+        
+        # Tenta adicionar o depósito
+        if current_user.add_deposit(value, index):
+            return {'success': True}
+        else:
+            return {'success': False, 'error': 'Erro ao salvar depósito'}, 500
+            
+    except Exception as e:
+        db.session.rollback()
+        print(f"Erro no toggle_deposit: {str(e)}")
+        return {'success': False, 'error': 'Erro interno'}, 500

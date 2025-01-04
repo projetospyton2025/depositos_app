@@ -1,0 +1,943 @@
+
+C:\>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\
+
+04/01/2025  14:13    <DIR>          depositos_app
+04/01/2025  14:12        11.761.931 depositos_app.rar
+22/12/2024  06:46    <DIR>          ffmpeg-7.1
+22/09/2024  11:37    <DIR>          Intel
+02/01/2025  07:33    <DIR>          ja-netfilter-all
+07/12/2019  06:14    <DIR>          PerfLogs
+02/01/2025  07:18    <DIR>          Program Files
+22/12/2024  07:12    <DIR>          Program Files (x86)
+22/09/2024  11:42    <DIR>          Users
+04/01/2025  13:16    <DIR>          wamp64
+02/01/2025  15:15    <DIR>          Windows
+               1 arquivo(s)     11.761.931 bytes
+              10 pasta(s)   368.362.205.184 bytes disponíveis
+
+C:\>cd depositos_app
+
+C:\depositos_app>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\depositos_app
+
+04/01/2025  14:13    <DIR>          .
+04/01/2025  14:13    <DIR>          ..
+04/01/2025  13:28    <DIR>          app
+04/01/2025  13:19               464 config.py
+03/01/2025  16:13    <DIR>          instance
+03/01/2025  14:46             1.096 LICENSE
+03/01/2025  14:46               131 README.md
+04/01/2025  13:19                60 requirements.txt
+04/01/2025  13:30             1.165 run.py
+03/01/2025  15:00    <DIR>          venv
+04/01/2025  13:19    <DIR>          __pycache__
+               5 arquivo(s)          2.916 bytes
+               6 pasta(s)   368.362.184.704 bytes disponíveis
+
+C:\depositos_app>type run.py
+# run.py (DESCOMENTE PARA RODAR Localmente)
+# run.py (COMENTE PARA RODAR Remotamente)
+
+"""
+from app import create_app, db
+import os
+
+app = create_app()
+
+if __name__ == '__main__':
+    with app.app_context():
+        db_path = os.path.join(os.getcwd(), 'depositos.db')
+        print(f"Caminho do banco de dados: {db_path}")
+        print(f"Banco existe? {os.path.exists(db_path)}")
+        db.create_all()
+    app.run(debug=True)
+"""
+
+"""
+from app import create_app, db
+
+app = create_app()
+
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True)
+"""
+# run.py (COMENTE PARA RODAR Localmente)
+# run.py (DESCOMENTE PARA RODAR Remotamente)
+
+
+from app import create_app, db
+import os
+
+app = create_app()
+
+if __name__ == '__main__':
+    # Configura o contexto do aplicativo para criar tabelas no banco de dados.
+    with app.app_context():
+        db.create_all()
+
+    # Obt├⌐m a porta do ambiente (Render) ou usa 5000 como padr├úo.
+    port = int(os.environ.get("PORT", 1000))
+    # Executa o servidor no modo de produ├º├úo.
+    app.run(host="0.0.0.0", port=port, debug=False)
+
+C:\depositos_app>type requirements.txt
+flask
+flask-sqlalchemy>=3.0
+sqlalchemy>=2.0
+flask-login
+
+C:\depositos_app>type config.py
+# config.py
+
+"""
+class Config:
+    SECRET_KEY = 'sua_chave_secreta_aqui'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///depositos.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+"""
+
+# caminho absoluto
+import os
+
+class Config:
+    SECRET_KEY = 'sua_chave_secreta_aqui'
+    db_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'depositos.db')
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{db_path}'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+C:\depositos_app>cd instance
+
+C:\depositos_app\instance>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\depositos_app\instance
+
+03/01/2025  16:13    <DIR>          .
+03/01/2025  16:13    <DIR>          ..
+               0 arquivo(s)              0 bytes
+               2 pasta(s)   368.358.928.384 bytes disponíveis
+
+C:\depositos_app\instance>cd..
+
+C:\depositos_app>cd app
+
+C:\depositos_app\app>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\depositos_app\app
+
+04/01/2025  13:28    <DIR>          .
+04/01/2025  13:28    <DIR>          ..
+04/01/2025  13:28            12.288 depositos.db
+04/01/2025  13:19    <DIR>          models
+04/01/2025  13:19    <DIR>          routes
+03/01/2025  14:46    <DIR>          static
+04/01/2025  13:19    <DIR>          templates
+04/01/2025  13:19             3.591 __init__.py
+04/01/2025  13:24    <DIR>          __pycache__
+               2 arquivo(s)         15.879 bytes
+               7 pasta(s)   368.358.612.992 bytes disponíveis
+
+C:\depositos_app\app>type depositos.db
+☼°☻☼te format 3►☺☺@  ♣♥☺♦☺♣.vï
+☼
+☼╧üB☺↨§§☺égtableuseruser☻CREATE TABLE user (
+        id INTEGER NOT NULL,
+        username VARCHAR(150) NOT NULL,
+        password_hash VARCHAR(150) NOT NULL,
+        deposits TEXT,
+        PRIMARY KEY (id),
+        UNIQUE (username)
+☺☼Y☼Yü$☺♠#üYgmarcio.maiapbkdf2:sha256:260000$4VkNgxEqhyjUVHdy$bbe1a0fac1329202d84e5051bc94323f6a619749a210838c5aadda63bfb4fc09{"5.0-0": true, "5.0-1": true, "5.0-2": true}
+☺☼±☼±♫♥#        marcio.maia
+C:\depositos_app\app>type __init__.py
+# app/__init__.py
+
+#from flask import Flask
+#from flask_sqlalchemy import SQLAlchemy
+#from flask_login import LoginManager
+#from config import Config
+
+#db = SQLAlchemy()
+#login_manager = LoginManager()
+
+#def create_app():
+#    app = Flask(__name__)
+#    app.config.from_object(Config)
+
+#    db.init_app(app)
+#    login_manager.init_app(app)
+#    login_manager.login_view = 'main.index'
+
+#    from app.routes.main import main
+#    app.register_blueprint(main)
+
+#    return app
+
+
+"""
+import os
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+def create_app():
+    app = Flask(__name__)
+
+    # Caminho absoluto para a raiz do projeto
+    project_root = os.path.abspath(os.path.dirname(__file__))
+    db_path = os.path.join(project_root, '../depositos.db')  # '../' sobe para a raiz do projeto
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # Inicializa o SQLAlchemy
+    db.init_app(app)
+
+    # Importa as rotas e modelos
+    with app.app_context():
+        from app.routes import main
+        app.register_blueprint(main)
+
+        from app.models import user  # Certifique-se de importar os modelos
+
+        # Cria o banco de dados, se ele ainda n├úo existir
+        db.create_all()
+
+    return app
+"""
+"""
+
+import os
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+
+# Inicializando extens├╡es
+db = SQLAlchemy()
+login_manager = LoginManager()
+
+def create_app():
+    app = Flask(__name__)
+
+    # Configura├º├úo do banco de dados
+    project_root = os.path.abspath(os.path.dirname(__file__))
+    db_path = os.path.join(project_root, '../depositos.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.secret_key = "sua-chave-secreta"  # Altere para uma chave segura
+
+    # Inicializando extens├╡es com o app
+    db.init_app(app)
+    login_manager.init_app(app)
+
+    # Configura├º├úo do login
+    login_manager.login_view = "main.login"
+
+    # Registrando rotas
+    with app.app_context():
+        from app.routes.main import main
+        app.register_blueprint(main)
+
+        # Importa modelos e cria o banco de dados
+        from app.models.user import User
+        db.create_all()
+
+    return app
+"""
+
+#Este arquivo configura o aplicativo Flask e inicializa o banco de dados. Verifique se o banco de dados est├í sendo inicializado corretamente e se db.create_all() est├í sendo chamado.
+
+import os
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+
+# Inicializando extens├╡es
+db = SQLAlchemy()
+login_manager = LoginManager()
+
+def create_app():
+    app = Flask(__name__)
+
+    # Configura├º├úo do banco de dados
+    project_root = os.path.abspath(os.path.dirname(__file__))
+    db_path = os.path.join(project_root, 'depositos.db')  # Usando caminho correto
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.secret_key = 'sua-chave-secreta'  # Defina uma chave secreta segura
+
+    # Inicializando extens├╡es
+    db.init_app(app)
+    login_manager.init_app(app)
+
+    # Registrando rotas
+    from app.routes.main import main
+    app.register_blueprint(main)
+
+    # Criando banco de dados
+    with app.app_context():
+        db.create_all()
+
+    return app
+
+C:\depositos_app\app>cd models
+
+C:\depositos_app\app\models>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\depositos_app\app\models
+
+04/01/2025  13:19    <DIR>          .
+04/01/2025  13:19    <DIR>          ..
+04/01/2025  13:19             2.618 user.py
+03/01/2025  14:46                88 __init__.py
+04/01/2025  13:24    <DIR>          __pycache__
+               2 arquivo(s)          2.706 bytes
+               3 pasta(s)   368.360.878.080 bytes disponíveis
+
+C:\depositos_app\app\models>type user.py
+# app/models/user.py
+"""
+
+from app import db, login_manager
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password_hash = db.Column(db.String(120), nullable=False)
+    deposits = db.Column(db.Text)  # JSON string para armazenar dep├│sitos
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+    """
+"""
+from flask_login import UserMixin
+from app import db, login_manager
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    password_hash = db.Column(db.String(150), nullable=False)
+    deposits = db.Column(db.Text, default='{}')
+
+    def set_password(self, password):
+        from werkzeug.security import generate_password_hash
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        from werkzeug.security import check_password_hash
+        return check_password_hash(self.password_hash, password)
+ """
+
+#Este arquivo define o modelo de dados para os usu├írios. Verifique se os campos, como username, password_hash e deposits, est├úo corretamente configurados e se a l├│gica de criptografia de senha (set_password e check_password) est├í correta.
+
+from flask_login import UserMixin
+from app import db, login_manager
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    password_hash = db.Column(db.String(150), nullable=False)
+    deposits = db.Column(db.Text, default='{}')  # Deposits como texto JSON
+
+    def set_password(self, password):
+        from werkzeug.security import generate_password_hash
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        from werkzeug.security import check_password_hash
+        return check_password_hash(self.password_hash, password)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+C:\depositos_app\app\models>cd..
+
+C:\depositos_app\app>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\depositos_app\app
+
+04/01/2025  13:28    <DIR>          .
+04/01/2025  13:28    <DIR>          ..
+04/01/2025  13:28            12.288 depositos.db
+04/01/2025  13:19    <DIR>          models
+04/01/2025  13:19    <DIR>          routes
+03/01/2025  14:46    <DIR>          static
+04/01/2025  13:19    <DIR>          templates
+04/01/2025  13:19             3.591 __init__.py
+04/01/2025  13:24    <DIR>          __pycache__
+               2 arquivo(s)         15.879 bytes
+               7 pasta(s)   368.364.949.504 bytes disponíveis
+
+C:\depositos_app\app>cd routes
+
+C:\depositos_app\app\routes>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\depositos_app\app\routes
+
+04/01/2025  13:19    <DIR>          .
+04/01/2025  13:19    <DIR>          ..
+04/01/2025  13:19             8.010 main.py
+03/01/2025  14:46                87 __init__.py
+04/01/2025  13:24    <DIR>          __pycache__
+               2 arquivo(s)          8.097 bytes
+               3 pasta(s)   368.364.613.632 bytes disponíveis
+
+C:\depositos_app\app\routes>type main.py
+"""
+
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask_login import login_user, login_required, logout_user, current_user
+from app.models.user import User
+from app import db
+import json
+
+main = Blueprint('main', __name__)
+
+DEPOSITS_STRUCTURE = [
+    (5.00, 20, 100.00),
+    (10.00, 30, 300.00),
+    (20.00, 30, 600.00),
+    (50.00, 40, 2000.00),
+    (75.00, 40, 3000.00),
+    (100.00, 40, 4000.00)
+]
+
+@main.route('/')
+def index():
+    if current_user.is_authenticated:
+        deposits_status = json.loads(current_user.deposits or '{}')
+        total_clicked = sum(float(key.split('-')[0])
+                          for key, value in deposits_status.items()
+                          if value)
+        return render_template('index.html',
+                             deposits_structure=DEPOSITS_STRUCTURE,
+                             deposits_status=deposits_status,
+                             total_clicked=total_clicked)
+    return render_template('index.html')
+
+@main.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    user = User.query.filter_by(username=username).first()
+
+    if user and user.check_password(password):
+        login_user(user)
+        return redirect(url_for('main.index'))
+
+    flash('Usu├írio ou senha inv├ílidos')
+    return redirect(url_for('main.index'))
+
+@main.route('/register', methods=['POST'])
+def register():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if User.query.filter_by(username=username).first():
+        flash('Usu├írio j├í existe')
+        return redirect(url_for('main.index'))
+
+    user = User(username=username, deposits='{}')
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+
+    login_user(user)
+    return redirect(url_for('main.index'))
+
+@main.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('main.index'))
+
+@main.route('/toggle_deposit', methods=['POST'])
+@login_required
+def toggle_deposit():
+    data = request.json
+    value = data['value']
+    index = data['index']
+    key = f"{value}-{index}"
+
+    deposits = json.loads(current_user.deposits)
+    deposits[key] = True
+
+    current_user.deposits = json.dumps(deposits)
+    db.session.commit()
+
+    return {'success': True}
+
+    """
+"""
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask_login import login_user, login_required, logout_user, current_user
+from app.models.user import User
+from app import db
+import json
+
+main = Blueprint('main', __name__)
+
+DEPOSITS_STRUCTURE = [
+    (5.00, 20, 100.00),
+    (10.00, 30, 300.00),
+    (20.00, 30, 600.00),
+    (50.00, 40, 2000.00),
+    (75.00, 40, 3000.00),
+    (100.00, 40, 4000.00)
+]
+
+@main.route('/')
+def index():
+    if current_user.is_authenticated:
+        deposits_status = json.loads(current_user.deposits or '{}')
+        total_clicked = sum(float(key.split('-')[0])
+                            for key, value in deposits_status.items()
+                            if value)
+        return render_template('index.html',
+                               deposits_structure=DEPOSITS_STRUCTURE,
+                               deposits_status=deposits_status,
+                               total_clicked=total_clicked)
+    return render_template('index.html')
+
+@main.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    user = User.query.filter_by(username=username).first()
+
+    if user and user.check_password(password):
+        login_user(user)
+        return redirect(url_for('main.index'))
+
+    flash('Usu├írio ou senha inv├ílidos')
+    return redirect(url_for('main.index'))
+
+@main.route('/register', methods=['POST'])
+def register():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if User.query.filter_by(username=username).first():
+        flash('Usu├írio j├í existe')
+        return redirect(url_for('main.index'))
+
+    user = User(username=username, deposits='{}')
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+
+    login_user(user)
+    return redirect(url_for('main.index'))
+
+@main.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('main.index'))
+
+@main.route('/toggle_deposit', methods=['POST'])
+@login_required
+def toggle_deposit():
+    data = request.json
+    value = data['value']
+    index = data['index']
+    key = f"{value}-{index}"
+
+    deposits = json.loads(current_user.deposits)
+    deposits[key] = True
+
+    current_user.deposits = json.dumps(deposits)
+    db.session.commit()
+
+    return {'success': True}
+
+"""
+
+#Este arquivo cont├⌐m as rotas principais do seu aplicativo. Ele gerencia o login, registro e a manipula├º├úo de dep├│sitos.
+#  ├ë importante garantir que o banco de dados seja atualizado corretamente aqui, especialmente quando o usu├írio faz login, se registra ou interage com os dep├│sitos.
+
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask_login import login_user, login_required, logout_user, current_user
+from app.models.user import User
+from app import db
+import json
+
+main = Blueprint('main', __name__)
+
+DEPOSITS_STRUCTURE = [
+    (5.00, 20, 100.00),
+    (10.00, 30, 300.00),
+    (20.00, 30, 600.00),
+    (50.00, 40, 2000.00),
+    (75.00, 40, 3000.00),
+    (100.00, 40, 4000.00)
+]
+
+@main.route('/')
+def index():
+    if current_user.is_authenticated:
+        deposits_status = json.loads(current_user.deposits or '{}')
+        total_clicked = sum(float(key.split('-')[0])
+                            for key, value in deposits_status.items()
+                            if value)
+        return render_template('index.html',
+                               deposits_structure=DEPOSITS_STRUCTURE,
+                               deposits_status=deposits_status,
+                               total_clicked=total_clicked)
+    return render_template('index.html')
+
+@main.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    user = User.query.filter_by(username=username).first()
+
+    if user and user.check_password(password):
+        login_user(user)
+        return redirect(url_for('main.index'))
+
+    flash('Usu├írio ou senha inv├ílidos')
+    return redirect(url_for('main.index'))
+
+@main.route('/register', methods=['POST'])
+def register():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if User.query.filter_by(username=username).first():
+        flash('Usu├írio j├í existe')
+        return redirect(url_for('main.index'))
+
+    user = User(username=username, deposits='{}')
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+
+    login_user(user)
+    return redirect(url_for('main.index'))
+
+@main.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('main.index'))
+
+@main.route('/toggle_deposit', methods=['POST'])
+@login_required
+def toggle_deposit():
+    data = request.json
+    value = data['value']
+    index = data['index']
+    key = f"{value}-{index}"
+
+    deposits = json.loads(current_user.deposits)
+    deposits[key] = True
+
+#Verifique se os dados de deposits est├úo sendo atualizados corretamente quando o usu├írio interage com o sistema e se db.session.commit() est├í sendo chamado sempre que houver altera├º├╡es.
+    current_user.deposits = json.dumps(deposits)
+    db.session.commit()
+
+    return {'success': True}
+
+
+C:\depositos_app\app\routes>cd..
+
+C:\depositos_app\app>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\depositos_app\app
+
+04/01/2025  13:28    <DIR>          .
+04/01/2025  13:28    <DIR>          ..
+04/01/2025  13:28            12.288 depositos.db
+04/01/2025  13:19    <DIR>          models
+04/01/2025  13:19    <DIR>          routes
+03/01/2025  14:46    <DIR>          static
+04/01/2025  13:19    <DIR>          templates
+04/01/2025  13:19             3.591 __init__.py
+04/01/2025  13:24    <DIR>          __pycache__
+               2 arquivo(s)         15.879 bytes
+               7 pasta(s)   368.362.590.208 bytes disponíveis
+
+C:\depositos_app\app>cd templates
+
+C:\depositos_app\app\templates>type index.html
+<!-- app/templates/index.html-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Controle de Dep├│sitos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="center">
+        <div class="container mt-4">
+            {% if current_user.is_authenticated %}
+                <div class="row mb-4">
+                    <div class="col">
+                        <h2>Ol├í, {{ current_user.username }}, tudo bem?</h2>
+                        <a href="{{ url_for('main.logout') }}" class="btn btn-danger">Sair</a>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar"
+                                style="width: {{ (total_clicked / 10000) * 100 }}%"
+                                aria-valuenow="{{ total_clicked }}"
+                                aria-valuemin="0"
+                                aria-valuemax="10000">
+                                R$ {{ "%.2f"|format(total_clicked) }}
+                            </div>
+                        </div>
+                        <p class="mt-2">
+                            Total depositado: R$ {{ "%.2f"|format(total_clicked) }} |
+                            Falta: R$ {{ "%.2f"|format(10000 - total_clicked) }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="deposits-container">
+                    {% for value, count, total in deposits_structure %}
+                        <div class="row mb-3">
+                            <div class="col">
+                                <h5>R$ {{ "%.2f"|format(value) }} ({{ count }} dep├│sitos - Total: R$ {{ "%.2f"|format(total) }})</h5>
+                                {% for i in range(count) %}
+                                    <div class="deposit-cell{% if deposits_status[value|string + '-' + i|string] %} clicked{% endif %}"
+                                        data-value="{{ value }}"
+                                        data-index="{{ i }}"
+                                        onclick="toggleDeposit(this)">
+                                        R$ {{ "%.2f"|format(value) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Login</h2>
+                        <form method="POST" action="{{ url_for('main.login') }}">
+                            <div class="mb-3">
+                                <input type="text" name="username" class="form-control" placeholder="Usu├írio" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" name="password" class="form-control" placeholder="Senha" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Entrar</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <h2>Registro</h2>
+                        <form method="POST" action="{{ url_for('main.register') }}">
+                            <div class="mb-3">
+                                <input type="text" name="username" class="form-control" placeholder="Usu├írio" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" name="password" class="form-control" placeholder="Senha" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Registrar</button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-info mt-3">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <div class="footer">
+        <p>2025 - Desenvolvimento, L├│gica e Deploy - M├írcio Fernando Maia</p>
+    </div>
+
+</body>
+</html>
+C:\depositos_app\app\templates>cd..
+
+C:\depositos_app\app>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\depositos_app\app
+
+04/01/2025  13:28    <DIR>          .
+04/01/2025  13:28    <DIR>          ..
+04/01/2025  13:28            12.288 depositos.db
+04/01/2025  13:19    <DIR>          models
+04/01/2025  13:19    <DIR>          routes
+03/01/2025  14:46    <DIR>          static
+04/01/2025  13:19    <DIR>          templates
+04/01/2025  13:19             3.591 __init__.py
+04/01/2025  13:24    <DIR>          __pycache__
+               2 arquivo(s)         15.879 bytes
+               7 pasta(s)   368.363.708.416 bytes disponíveis
+
+C:\depositos_app\app>cd static
+
+C:\depositos_app\app\static>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\depositos_app\app\static
+
+03/01/2025  14:46    <DIR>          .
+03/01/2025  14:46    <DIR>          ..
+04/01/2025  13:19    <DIR>          css
+03/01/2025  14:46    <DIR>          js
+               0 arquivo(s)              0 bytes
+               4 pasta(s)   368.363.520.000 bytes disponíveis
+
+C:\depositos_app\app\static>cd css
+
+C:\depositos_app\app\static\css>type style.css
+/*# app/static/css/style.css*/
+.deposit-cell {
+    width: 80px;
+    height: 40px;
+    margin: 2px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.deposit-cell.clicked {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.progress {
+    height: 25px;
+}
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px; /* Ajuste a altura para 40px */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    background-color: rgba(144, 144, 144, 0.6); /* Cor de fundo com transpar├¬ncia (0.5 de opacidade) */
+    color: black; /* Cor do texto */
+    font-size: 16px; /* Tamanho da fonte */
+    text-align: center; /* Garante que o texto seja centralizado dentro do container */
+  }
+
+
+
+
+
+C:\depositos_app\app\static\css>cd..
+
+C:\depositos_app\app\static>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\depositos_app\app\static
+
+03/01/2025  14:46    <DIR>          .
+03/01/2025  14:46    <DIR>          ..
+04/01/2025  13:19    <DIR>          css
+03/01/2025  14:46    <DIR>          js
+               0 arquivo(s)              0 bytes
+               4 pasta(s)   368.363.450.368 bytes disponíveis
+
+C:\depositos_app\app\static>cd js
+
+C:\depositos_app\app\static\js>type script.js
+//# app/static/js/script.js
+function toggleDeposit(element) {
+    if (element.classList.contains('clicked')) return;
+
+    const value = element.dataset.value;
+    const index = element.dataset.index;
+
+    fetch('/toggle_deposit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            value: value,
+            index: index
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            element.classList.add('clicked');
+            location.reload();
+        }
+    });
+}
+
+C:\depositos_app\app\static\js>cd..
+
+C:\depositos_app\app\static>cd..
+
+C:\depositos_app\app>dir
+ O volume na unidade C não tem nome.
+ O Número de Série do Volume é 2CDA-6E1D
+
+ Pasta de C:\depositos_app\app
+
+04/01/2025  13:28    <DIR>          .
+04/01/2025  13:28    <DIR>          ..
+04/01/2025  13:28            12.288 depositos.db
+04/01/2025  13:19    <DIR>          models
+04/01/2025  13:19    <DIR>          routes
+03/01/2025  14:46    <DIR>          static
+04/01/2025  13:19    <DIR>          templates
+04/01/2025  13:19             3.591 __init__.py
+04/01/2025  13:24    <DIR>          __pycache__
+               2 arquivo(s)         15.879 bytes
+               7 pasta(s)   368.363.446.272 bytes disponíveis
+
+C:\depositos_app\app>
