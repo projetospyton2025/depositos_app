@@ -1,6 +1,9 @@
 # Pacotes essenciais
 flask==2.2.5  # Atualizado para versão compatível com flask-sqlalchemy
-werkzeug==2.0.3  # Versão compatível com Flask 2.2.5
+# werkzeug==2.0.3  # Versão compatível com Flask 2.2.5
+werkzeug>=2.2.2  # Versão compatível com Flask 2.2.5
+
+
 
 # Pacote opcional (descomente se necessário)
 # numpy==1.21.6
