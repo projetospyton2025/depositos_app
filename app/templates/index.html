@@ -12,7 +12,7 @@
             {% if current_user.is_authenticated %}
                 <div class="row mb-4">
                     <div class="col">
-                        <h2>Olá, {{ current_user.username }}</h2>
+                        <h2>Olá, {{ current_user.username }}, tudo bem?</h2>
                         <a href="{{ url_for('main.logout') }}" class="btn btn-danger">Sair</a>
                     </div>
                 </div>
